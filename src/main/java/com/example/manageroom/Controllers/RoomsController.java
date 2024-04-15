@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("partner/api/manage")
+@RequestMapping("partner/api")
 public class RoomsController {
 
    @Autowired
