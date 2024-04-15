@@ -1,0 +1,11 @@
+version: "3.3"
+services:
+  login:
+    container_name: manage-room-partner
+    image: ngoctienwork2002/manage-room-partner
+    ports:
+      - '2301:2301'
+    volumes:
+      - ./:/server
+      - /var/www/html/room_images/:/room_images
+    restart: always
