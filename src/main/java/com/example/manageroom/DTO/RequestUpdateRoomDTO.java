@@ -1,50 +1,44 @@
 package com.example.manageroom.DTO;
 
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.Type;
 
 import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class AddRoomDTO {
-
+public class RequestUpdateRoomDTO {
+    @NotNull
+   private Integer roomId;
     @NotNull
     @NotBlank
-    private String roomName;
-
+   private String roomName;
     @NotNull
-    private Long roomPrice;
-
+   private boolean roomStatus;
     @NotNull
-    private Integer roomType;
-
+   private Long roomPrice;
     @NotNull
-    private Integer hotelId;
-
+   private Integer roomType;
     @NotNull
-    private Integer roomQuantity;
-
-
+   private Integer roomQuantity;
     @NotNull
     @NotBlank
-    private String roomDescription;
-
+   private String roomDescription;
     @NotNull
     @NotBlank
-    private String roomSize;
-
+   private String roomSize;
     @NotNull
-    private Integer roomBedQuantity;
-
+   private Integer roomBedQuantity;
     @NotNull
-    private Integer roomCapacity;
+   private Integer roomCapacity;
 
     @NotNull
     @NotEmpty
-    private List<Integer> roomFacilites;
+    private List<Integer> facilities;
 }

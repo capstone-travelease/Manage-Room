@@ -30,9 +30,10 @@ public class RoomsController {
         return new ResponeDTO(response.getStatus(),roomTypes,"OK");
     }
 
-    @GetMapping("/rooms/detail")
-    public  boolean getDetailedRoom(){
-        return true;
+    @GetMapping("/rooms/detail/{id}")
+    public  ResponeDetailRoomDTO getDetailedRoom(@PathVariable("id") Integer roomId){
+        return new ResponeDetailRoomDTO(HttpServletResponse.SC_OK,roomsService.getDetailedRoom(roomId),"OK");
+
     }
 
     @PostMapping("/rooms")
@@ -55,9 +56,19 @@ public class RoomsController {
         return new ResponeDTO(response.getStatus(),null,"OK");
     }
 
+    @PutMapping("/rooms")
+    public ResponeDTO updateRoom(@RequestBody @Valid RequestUpdateRoomDTO rooms,HttpServletResponse response){
+        boolean isCheckErrorRoom = roomsService.updateRoom(rooms);
+        if(!isCheckErrorRoom){
+             response.setStatus(400);
+             return new ResponeDTO(response.getStatus(), null,"BAD_REQUEST");
+        }
+        return new ResponeDTO(response.getStatus(), null,"OK");
+
+    }
     @DeleteMapping("/rooms")
     public ResponeDTO disableRoom(HttpServletResponse response, @RequestBody @Valid DisableRoomDTO rooms ){
-        boolean isCheckErrorRoom = roomsService.disableRoom(rooms.getRoomId(),rooms.getStatus());
+        boolean isCheckErrorRoom = roomsService.disableRoom(rooms.getRoomId(),rooms.isStatus());
         if(!isCheckErrorRoom){
             response.setStatus(500);
             return new ResponeDTO(response.getStatus(),null,"Internal Server Error");

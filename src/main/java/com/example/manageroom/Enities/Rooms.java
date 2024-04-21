@@ -11,7 +11,7 @@ public class Rooms {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer room_id;
     private String room_name;
-    private Integer room_status;
+    private boolean room_status;
     private Long room_price;
     private Integer room_type_id;
     private Integer hotel_id;
@@ -20,7 +20,7 @@ public class Rooms {
     public Rooms() {
     }
 
-    public Rooms(Integer room_id, String room_name, Integer room_status, Long room_price, Integer room_type_id, Integer hotel_id, Integer room_quantity) {
+    public Rooms(Integer room_id, String room_name, boolean room_status, Long room_price, Integer room_type_id, Integer hotel_id, Integer room_quantity) {
         this.room_id = room_id;
         this.room_name = room_name;
         this.room_status = room_status;
@@ -46,11 +46,11 @@ public class Rooms {
         this.room_name = room_name;
     }
 
-    public Integer getRoom_status() {
+    public boolean getRoom_status() {
         return room_status;
     }
 
-    public void setRoom_status(Integer room_status) {
+    public void setRoom_status(boolean room_status) {
         this.room_status = room_status;
     }
 

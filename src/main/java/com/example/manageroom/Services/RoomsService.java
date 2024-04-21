@@ -1,8 +1,6 @@
 package com.example.manageroom.Services;
 
-import com.example.manageroom.DTO.AddRoomDTO;
-import com.example.manageroom.DTO.ListRooms;
-import com.example.manageroom.DTO.ResponeDTO;
+import com.example.manageroom.DTO.*;
 import com.example.manageroom.Repositories.RoomsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,13 +30,14 @@ public class RoomsService {
         return roomsRepository.listRoomType();
     }
 
+
     private List<String> getImageUrl(Integer roomId){
         return roomsRepository.listImage(roomId);
     }
 
     public Integer insertRoom(AddRoomDTO room){
         try {
-            Integer roomId = roomsRepository.addNewRoom(room.getRoomName(),room.getRoomStatus(),room.getRoomPrice(),room.getRoomType(),room.getHotelId(),room.getRoomQuantity());
+            Integer roomId = roomsRepository.addNewRoom(room.getRoomName(),true,room.getRoomPrice(),room.getRoomType(),room.getHotelId(),room.getRoomQuantity());
             boolean isCheckDetailedRoom = insertDetailedRoom(roomId,room.getRoomDescription(),room.getRoomSize(),room.getRoomBedQuantity(),room.getRoomCapacity());
             boolean isCheckRoomFacilities = insertRoomFacilities(roomId,room.getRoomFacilites());
             if(!isCheckDetailedRoom || !isCheckRoomFacilities){
@@ -48,6 +47,19 @@ public class RoomsService {
         }catch (Exception ex){
             System.err.println(ex);
             return 500;
+        }
+    }
+    public DetailedRoomDTO getDetailedRoom(Integer roomId){
+        try {
+            DetailedRoomDTO detailedRoom =  roomsRepository.listDetailedRoom(roomId);
+            List<String> roomImage = getImageUrl(roomId);
+            List<Integer> roomFacilities = roomsRepository.listRoomFacilites(roomId);
+            detailedRoom.setImagePath(roomImage);
+            detailedRoom.setFacilities(roomFacilities);
+            return detailedRoom;
+        }catch (Exception ex){
+            System.err.println(ex);
+            return null;
         }
     }
 
@@ -72,7 +84,22 @@ public class RoomsService {
         }
     }
 
-    public boolean disableRoom(Integer roomId, Integer roomStatus){
+    public boolean updateRoom(RequestUpdateRoomDTO room){
+        try {
+            roomsRepository.updateRoom(
+                    room.getRoomId(),room.getRoomName(),room.isRoomStatus(),room.getRoomPrice(),room.getRoomType(),room.getRoomQuantity()
+                    );
+            roomsRepository.updateDetailedRoom(room.getRoomId(),room.getRoomDescription(),room.getRoomSize(),room.getRoomBedQuantity(),room.getRoomCapacity());
+            roomsRepository.removeRoomFacilities(room.getRoomId());
+            insertRoomFacilities(room.getRoomId(),room.getFacilities());
+            return true;
+        }catch (Exception ex){
+             System.err.println(ex);
+             return false;
+        }
+    }
+
+    public boolean disableRoom(Integer roomId,boolean roomStatus){
         try {
             roomsRepository.disableRoom(roomId,roomStatus);
             return true;

@@ -12,5 +12,5 @@ public class DisableRoomDTO {
     @NotNull
     private Integer roomId;
     @NotNull
-    private Integer status;
+    private boolean status;
 }
