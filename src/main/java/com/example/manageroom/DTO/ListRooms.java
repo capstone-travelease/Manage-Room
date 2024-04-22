@@ -12,7 +12,7 @@ public class ListRooms {
     private Integer roomId;
     private String roomName;
     private Long roomPrice;
-    private Integer status;
+    private boolean status;
     private Integer roomQuantity;
     private String roomType;
     private List<String> imageUrl;
@@ -20,7 +20,7 @@ public class ListRooms {
     public ListRooms() {
     }
 
-    public ListRooms(Integer roomId, String roomName, Long roomPrice, Integer status, Integer roomQuantity, String roomType) {
+    public ListRooms(Integer roomId, String roomName, Long roomPrice, boolean status, Integer roomQuantity, String roomType) {
         this.roomId = roomId;
         this.roomName = roomName;
         this.roomPrice = roomPrice;
@@ -54,11 +54,11 @@ public class ListRooms {
         this.roomPrice = roomPrice;
     }
 
-    public Integer getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
