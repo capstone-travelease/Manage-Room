@@ -99,4 +99,13 @@ public interface RoomsRepository extends JpaRepository<Rooms,Integer> {
       @Query(value = "DELETE FROM public.room_facilities\n" +
               "\tWHERE room_id = ?1",nativeQuery = true)
       void removeRoomFacilities(Integer roomId);
+
+      @Query(value = "DELETE FROM public.room_attachment\n" +
+              "\tWHERE room_id = ?1 returning attachment_id",nativeQuery = true)
+      List<Integer> removeRoomAttachment(Integer roomId);
+      @Transactional
+      @Modifying
+      @Query(value = "DELETE FROM public.attachment\n" +
+              "\tWHERE attachment_id = ?1",nativeQuery = true)
+      void removeAttacment(Integer attachmentId);
 }

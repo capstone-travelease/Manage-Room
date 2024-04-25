@@ -66,6 +66,16 @@ public class RoomsController {
         return new ResponeDTO(response.getStatus(), null,"OK");
 
     }
+
+
+    @PutMapping("/rooms/image/{id}")
+    public ResponeDTO updateImage(@PathVariable("id") Integer roomId,@RequestParam("image") List<MultipartFile> image, @RequestPart List<String> data){
+        Integer httpCode = roomsService.updateRoomImage(roomId,image,data);
+        if(httpCode == HttpServletResponse.SC_INTERNAL_SERVER_ERROR){
+            return new ResponeDTO(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,null,"Error");
+        }
+        return new ResponeDTO(HttpServletResponse.SC_OK,null,"OK");
+    }
     @DeleteMapping("/rooms")
     public ResponeDTO disableRoom(HttpServletResponse response, @RequestBody @Valid DisableRoomDTO rooms ){
         boolean isCheckErrorRoom = roomsService.disableRoom(rooms.getRoomId(),rooms.isStatus());

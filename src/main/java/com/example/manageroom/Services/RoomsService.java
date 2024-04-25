@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class RoomsService {
 
-    private final String FOLDER_PATH = "D:\\Travel Market Place\\Image_Capstone\\";
+    private final String FOLDER_PATH = "/room_images/";
 
     @Autowired
     private RoomsRepository roomsRepository;
@@ -99,6 +99,22 @@ public class RoomsService {
         }
     }
 
+    public Integer updateRoomImage(Integer roomId, List<MultipartFile> image, List<String> data){
+        try {
+            List<Integer> attachmentId = roomsRepository.removeRoomAttachment(roomId);
+            for (Integer id : attachmentId) {
+                   roomsRepository.removeAttacment(id);
+            }
+            insertImage(image,roomId);
+            for (String path: data) {
+                roomsRepository.insertImage(new Date(),path);
+            }
+            return 200;
+        }catch (Exception ex){
+            System.err.println(ex);
+            return 500;
+        }
+    }
     public boolean disableRoom(Integer roomId,boolean roomStatus){
         try {
             roomsRepository.disableRoom(roomId,roomStatus);
