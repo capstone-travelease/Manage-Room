@@ -18,7 +18,7 @@ public class DetailedRoomDTO {
     private String roomDescription;
     private String roomSize;
     private Integer roomBedQuantity;
-    private Integer room_Capacity;
+    private Integer roomCapacity;
 
     public List<Integer> getFacilities() {
         return facilities;
@@ -39,7 +39,7 @@ public class DetailedRoomDTO {
     private List<Integer> facilities;
     private List<String> imagePath;
 
-    public DetailedRoomDTO(Integer roomId, String roomName, Integer roomType, boolean roomStatus, Long roomPrice, Integer roomQuantity, String roomDescription, String roomSize, Integer roomBedQuantity, Integer room_Capacity) {
+    public DetailedRoomDTO(Integer roomId, String roomName, Integer roomType, boolean roomStatus, Long roomPrice, Integer roomQuantity, String roomDescription, String roomSize, Integer roomBedQuantity, Integer roomCapacity) {
         this.roomId = roomId;
         this.roomName = roomName;
         this.roomType = roomType;
@@ -49,9 +49,8 @@ public class DetailedRoomDTO {
         this.roomDescription = roomDescription;
         this.roomSize = roomSize;
         this.roomBedQuantity = roomBedQuantity;
-        this.room_Capacity = room_Capacity;
+        this.roomCapacity = roomCapacity;
     }
-
 
     public Integer getRoomId() {
         return roomId;
@@ -125,12 +124,12 @@ public class DetailedRoomDTO {
         this.roomBedQuantity = roomBedQuantity;
     }
 
-    public Integer getRoom_Capacity() {
-        return room_Capacity;
+    public Integer getRoomCapacity() {
+        return roomCapacity;
     }
 
-    public void setRoom_Capacity(Integer room_Capacity) {
-        this.room_Capacity = room_Capacity;
+    public void setRoomCapacity(Integer roomCapacity) {
+        this.roomCapacity = roomCapacity;
     }
 
     @Override
@@ -145,7 +144,7 @@ public class DetailedRoomDTO {
                 ", roomDescription='" + roomDescription + '\'' +
                 ", roomSize='" + roomSize + '\'' +
                 ", roomBedQuantity=" + roomBedQuantity +
-                ", room_Capacity=" + room_Capacity +
+                ", roomCapacity=" + roomCapacity +
                 '}';
     }
 }
