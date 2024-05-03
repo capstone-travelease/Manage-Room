@@ -39,26 +39,29 @@ public interface RoomsRepository extends JpaRepository<Rooms,Integer> {
       DetailedRoomDTO listDetailedRoom(Integer roomId);
 
 
+      @Query("Select room_detail_id from RoomDetail where room_id = ?1")
+      Integer  getRoomDetailId(Integer roomId);
+
       @Query("SELECT rt FROM RoomTypes rt")
       List<Object> listRoomType();
+
+
 
       @Query(value = "INSERT INTO public.rooms(\n" +
               "\t room_name, room_status, room_price, room_type_id, hotel_id, room_quantity)\n" +
               "\tVALUES (?1, ?2, ?3, ?4, ?5, ?6) returning room_id",nativeQuery = true)
       Integer addNewRoom(String roomName, boolean roomStatus, Long roomPrice, Integer roomType, Integer hotelId, Integer roomQuantity);
 
-      @Transactional
-      @Modifying
       @Query(value = "INSERT INTO public.roomdetail(\n" +
               "\t room_id, room_description, room_size, room_bed_quantity, room_capacity)\n" +
-              "\tVALUES (?1, ?2, ?3, ?4, ?5);",nativeQuery = true)
-      void addDetailedRoom(Integer roomId, String roomDescription, String roomSize, Integer roomBedQuantity, Integer roomCapacity);
+              "\tVALUES (?1, ?2, ?3, ?4, ?5)",nativeQuery = true)
+      Integer addDetailedRoom(Integer roomId, String roomDescription, String roomSize, Integer roomBedQuantity, Integer roomCapacity);
 
       @Transactional
       @Modifying
       @Query(value = "INSERT INTO public.room_facilities(\n" +
               "\troom_id, facility_id)\n" +
-              "\tVALUES (?1, ?2 );",nativeQuery = true)
+              "\tVALUES (?1,?2)",nativeQuery = true)
       void insertRoomFacilites(Integer roomId, Integer facilityId);
 
       @Query(value = "INSERT INTO public.attachment(\n" +
@@ -70,7 +73,7 @@ public interface RoomsRepository extends JpaRepository<Rooms,Integer> {
       @Modifying
       @Query(value = "INSERT INTO public.room_attachment(\n" +
               "\tattachment_id, room_id)\n" +
-              "\tVALUES (?1, ?2);",nativeQuery = true)
+              "\tVALUES (?1, ?2)",nativeQuery = true)
       void insertRoomImage(Integer attachmentId, Integer roomId);
 
       @Transactional
@@ -87,12 +90,11 @@ public interface RoomsRepository extends JpaRepository<Rooms,Integer> {
               "\tWHERE room_id = ?1",nativeQuery = true)
       void updateRoom(Integer roomId, String roomName, boolean roomStatus, Long roomPrice, Integer roomType, Integer roomQuantity);
 
-      @Transactional
-      @Modifying
+
       @Query(value = "UPDATE public.roomdetail\n" +
               "\tSET room_description=?2, room_size=?3, room_bed_quantity=?4, room_capacity=?5\n" +
-              "\tWHERE room_id =?1",nativeQuery = true)
-      void updateDetailedRoom(Integer roomId, String roomDescription, String roomSize, Integer roomBedQuantity, Integer roomCapacity);
+              "\tWHERE room_id =?1 returning room_detail_id",nativeQuery = true)
+      Integer updateDetailedRoom(Integer roomId, String roomDescription, String roomSize, Integer roomBedQuantity, Integer roomCapacity);
 
       @Transactional
       @Modifying

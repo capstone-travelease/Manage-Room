@@ -38,9 +38,9 @@ public class RoomsService {
     public Integer insertRoom(AddRoomDTO room){
         try {
             Integer roomId = roomsRepository.addNewRoom(room.getRoomName(),true,room.getRoomPrice(),room.getRoomType(),room.getHotelId(),room.getRoomQuantity());
-            boolean isCheckDetailedRoom = insertDetailedRoom(roomId,room.getRoomDescription(),room.getRoomSize(),room.getRoomBedQuantity(),room.getRoomCapacity());
-            boolean isCheckRoomFacilities = insertRoomFacilities(roomId,room.getRoomFacilites());
-            if(!isCheckDetailedRoom || !isCheckRoomFacilities){
+            Integer isCheckDetailedRoom = insertDetailedRoom(roomId,room.getRoomDescription(),room.getRoomSize(),room.getRoomBedQuantity(),room.getRoomCapacity());
+            boolean isCheckRoomFacilities = insertRoomFacilities(isCheckDetailedRoom,room.getRoomFacilites());
+            if(isCheckDetailedRoom == null || !isCheckRoomFacilities){
                 return 500;
             }
             return roomId;
@@ -53,7 +53,8 @@ public class RoomsService {
         try {
             DetailedRoomDTO detailedRoom =  roomsRepository.listDetailedRoom(roomId);
             List<String> roomImage = getImageUrl(roomId);
-            List<Integer> roomFacilities = roomsRepository.listRoomFacilites(roomId);
+            Integer roomDetailId = roomsRepository.getRoomDetailId(roomId);
+            List<Integer> roomFacilities = roomsRepository.listRoomFacilites(roomDetailId);
             detailedRoom.setImagePath(roomImage);
             detailedRoom.setFacilities(roomFacilities);
             return detailedRoom;
@@ -86,12 +87,10 @@ public class RoomsService {
 
     public boolean updateRoom(RequestUpdateRoomDTO room){
         try {
-            roomsRepository.updateRoom(
-                    room.getRoomId(),room.getRoomName(),room.isRoomStatus(),room.getRoomPrice(),room.getRoomType(),room.getRoomQuantity()
-                    );
-            roomsRepository.updateDetailedRoom(room.getRoomId(),room.getRoomDescription(),room.getRoomSize(),room.getRoomBedQuantity(),room.getRoomCapacity());
+            roomsRepository.updateRoom(room.getRoomId(),room.getRoomName(),room.isRoomStatus(),room.getRoomPrice(),room.getRoomType(),room.getRoomQuantity());
+            Integer roomDetailId = roomsRepository.updateDetailedRoom(room.getRoomId(),room.getRoomDescription(),room.getRoomSize(),room.getRoomBedQuantity(),room.getRoomCapacity());
             roomsRepository.removeRoomFacilities(room.getRoomId());
-            insertRoomFacilities(room.getRoomId(),room.getFacilities());
+            insertRoomFacilities(roomDetailId,room.getFacilities());
             return true;
         }catch (Exception ex){
              System.err.println(ex);
@@ -134,13 +133,13 @@ public class RoomsService {
           }
     }
 
-    private boolean insertDetailedRoom(Integer roomId,String roomDescription, String roomSize, Integer roomBedQuantity, Integer roomCapacity){
+    private Integer insertDetailedRoom(Integer roomId,String roomDescription, String roomSize, Integer roomBedQuantity, Integer roomCapacity){
         try {
-            roomsRepository.addDetailedRoom(roomId,roomDescription,roomSize,roomBedQuantity,roomCapacity);
-            return true;
+            Integer roomDetailId = roomsRepository.addDetailedRoom(roomId,roomDescription,roomSize,roomBedQuantity,roomCapacity);
+            return roomDetailId;
         }catch (Exception ex){
             System.err.println(ex);
-            return false;
+            return null;
         }
     }
 
