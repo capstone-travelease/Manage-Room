@@ -89,7 +89,7 @@ public class RoomsService {
         try {
             roomsRepository.updateRoom(room.getRoomId(),room.getRoomName(),room.isRoomStatus(),room.getRoomPrice(),room.getRoomType(),room.getRoomQuantity());
             Integer roomDetailId = roomsRepository.updateDetailedRoom(room.getRoomId(),room.getRoomDescription(),room.getRoomSize(),room.getRoomBedQuantity(),room.getRoomCapacity());
-            roomsRepository.removeRoomFacilities(room.getRoomId());
+            roomsRepository.removeRoomFacilities(roomDetailId);
             insertRoomFacilities(roomDetailId,room.getFacilities());
             return true;
         }catch (Exception ex){
