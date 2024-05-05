@@ -106,7 +106,8 @@ public class RoomsService {
             }
             insertImage(image,roomId);
             for (String path: data) {
-                roomsRepository.insertImage(new Date(),path);
+                Integer attachmentDetailId = roomsRepository.insertImage(new Date(),path);
+                roomsRepository.insertRoomImage(attachmentDetailId,roomId);
             }
             return 200;
         }catch (Exception ex){
