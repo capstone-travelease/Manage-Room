@@ -54,7 +54,7 @@ public interface RoomsRepository extends JpaRepository<Rooms,Integer> {
 
       @Query(value = "INSERT INTO public.roomdetail(\n" +
               "\t room_id, room_description, room_size, room_bed_quantity, room_capacity)\n" +
-              "\tVALUES (?1, ?2, ?3, ?4, ?5)",nativeQuery = true)
+              "\tVALUES (?1, ?2, ?3, ?4, ?5) returning room_detail_id",nativeQuery = true)
       Integer addDetailedRoom(Integer roomId, String roomDescription, String roomSize, Integer roomBedQuantity, Integer roomCapacity);
 
       @Transactional
