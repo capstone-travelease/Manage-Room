@@ -69,7 +69,7 @@ public class RoomsController {
 
 
     @PutMapping("/rooms/image/{id}")
-    public ResponeDTO updateImage(@PathVariable("id") Integer roomId,@RequestParam("image") List<MultipartFile> image, @RequestPart("data") List<String> data,HttpServletResponse response){
+    public ResponeDTO updateImage(@PathVariable("id") Integer roomId,@RequestParam(value = "image",required = false) List<MultipartFile> image, @RequestPart("data") List<String> data,HttpServletResponse response){
         Integer httpCode = roomsService.updateRoomImage(roomId,image,data);
         if(httpCode == HttpServletResponse.SC_INTERNAL_SERVER_ERROR){
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
