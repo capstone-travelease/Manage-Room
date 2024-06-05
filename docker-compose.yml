@@ -2,7 +2,7 @@ version: "3.3"
 services:
   login:
     container_name: manage-room-partner
-    image: ngoctienwork2002/manage-room-partner
+    image: coderbillzay/manage-room-partner
     ports:
       - '2301:2301'
     volumes:
